@@ -34,19 +34,33 @@ const getHtmlPage = async (url) => {
   }
 };
 
-// Função para formatar a mensagem
 const messageFormat = (message) => {
+  const { title, description, budget, date, url, nameSite } = message;
+
+  // Limitar a quantidade de caracteres da descrição
+  const maxDescriptionLength = 350; // Defina o número máximo de caracteres desejado
+  const truncatedDescription =
+    description.length > maxDescriptionLength
+      ? description.substring(0, maxDescriptionLength) + "..."
+      : description;
+
+  // Remover links da descrição
+  const descriptionWithoutLinks = truncatedDescription.replace(
+    /https?:\/\/\S+/gi,
+    ""
+  );
+
   return `
-🚀 *Novo Projeto Encontrado!*
+🚀 *Novo Projeto Encontrado!  *${nameSite}**
 
-📝 *${message.title}*
+📝 *${title}*
 
-📄 ${message.description}
+📄 ${descriptionWithoutLinks}
 
-💰 ${message.budget || "A Combinar"}
+💰 ${budget || "A Combinar"}
 
-🗓️ *Data de Postagem:* ${message.date}
-🔗 *Link da Postagem:* [Clique aqui](${message.url})
+🗓️ *Data de Postagem:* ${date || ""}
+🔗 *Link da Postagem:* [Clique aqui](${url || ""})
   `;
 };
 
@@ -56,9 +70,7 @@ const sendTelegramMessage = (chatId, message) => {
   const opts = {
     parse_mode: "Markdown",
     reply_markup: {
-      inline_keyboard: [
-        [{ text: "Ver Projeto", url: message.url }],
-      ],
+      inline_keyboard: [[{ text: "Ver Projeto", url: message.url }]],
     },
   };
 
@@ -97,13 +109,28 @@ const sitesConfig = [
     name: "workana",
     url: "https://www.workana.com/jobs?category=it-programming&language=pt",
     projectsSelector: ".project-item.js-project:not(.project-item-featured)",
-    shouldIgnoreProject: (element) => element.querySelector(".label-max") !== null,
+    shouldIgnoreProject: (element) =>
+      element.querySelector(".label-max") !== null,
     parseProject: (element) => ({
-      title: element.querySelector("h2.project-title span span").getAttribute("title").trim(),
-      date: element.querySelector("h5.date.visible-xs strong").textContent.trim(),
-      budget: element.querySelector(".project-actions.floating .budget .values span").textContent.trim(),
-      url: `https://www.workana.com${element.querySelector("h2.project-title span a").getAttribute("href").trim()}`,
-      description: element.querySelector("div.html-desc.project-details span").innerHTML.trim().split("<br>")[0],
+      title: element
+        .querySelector("h2.project-title span span")
+        .getAttribute("title")
+        .trim(),
+      date: element
+        .querySelector("h5.date.visible-xs strong")
+        .textContent.trim(),
+      budget: element
+        .querySelector(".project-actions.floating .budget .values span")
+        .textContent.trim(),
+      url: `https://www.workana.com${element
+        .querySelector("h2.project-title span a")
+        .getAttribute("href")
+        .trim()}`,
+      description: element
+        .querySelector("div.html-desc.project-details span")
+        .innerHTML.trim()
+        .split("<br>")[0],
+      nameSite: "Workana",
     }),
   },
   {
@@ -113,9 +140,17 @@ const sitesConfig = [
     shouldIgnoreProject: (element) => false, // No 99freelas, não precisamos ignorar nada
     parseProject: (element) => ({
       title: element.getAttribute("data-nome").trim(),
-      date: element.querySelector(".item-text.information .datetime").textContent.trim(),
-      url: `https://www.99freelas.com.br${element.querySelector(".title a").getAttribute("href").trim()}`,
-      description: element.querySelector(".item-text.description.formatted-text").textContent.trim(),
+      date: element
+        .querySelector(".item-text.information .datetime")
+        .textContent.trim(),
+      url: `https://www.99freelas.com.br${element
+        .querySelector(".title a")
+        .getAttribute("href")
+        .trim()}`,
+      description: element
+        .querySelector(".item-text.description.formatted-text")
+        .textContent.trim(),
+      nameSite: "99freelas",
     }),
   },
 ];
@@ -127,11 +162,14 @@ bot.onText(/\/start/, (msg) => {
   bot.sendMessage(chatId, "O bot está ativo e monitorando novos projetos!");
 
   sitesConfig.forEach((siteConfig) => {
-    setInterval(() => {
-      if (chatIdToMonitor.has(chatId)) {
-        fetchProjects(chatId, siteConfig);
-      }
-    }, siteConfig.name === "workana" ? 30000 : 60000);
+    setInterval(
+      () => {
+        if (chatIdToMonitor.has(chatId)) {
+          fetchProjects(chatId, siteConfig);
+        }
+      },
+      siteConfig.name === "workana" ? 30000 : 60000
+    );
   });
 });
 
