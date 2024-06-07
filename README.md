@@ -36,8 +36,8 @@ src/
 
 1. Clone o repositório:
     ```sh
-    git clone https://github.com/seu-usuario/monitorando-freelas.git
-    cd monitorando-freelas
+    git clone https://github.com/DevEduardoSouza/freelance-alert-bot.git
+    cd freelance-alert-bot
     ```
 
 2. Instale as dependências:
