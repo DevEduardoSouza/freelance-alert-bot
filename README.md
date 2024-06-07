@@ -45,8 +45,16 @@ src/
     npm install
     ```
 
-3. Configure o token do bot do Telegram:
-    - No arquivo `src/bot/bot.js`, substitua `"SEU_TOKEN_AQUI"` pelo token do seu bot do Telegram.
+### Configuração do Token do Bot do Telegram
+
+1. No arquivo `.env` na raiz do seu projeto, adicione a seguinte linha:
+    ```
+    TELEGRAM_BOT_TOKEN=seu_token_aqui
+    ```
+   Certifique-se de substituir `"seu_token_aqui"` pelo token do seu bot do Telegram.
+
+2. O arquivo `.env` será automaticamente carregado pelo seu código Node.js para acessar o token do bot.
+
 
 ## Uso
 
