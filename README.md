@@ -45,6 +45,17 @@ src/
     npm install
     ```
 
+
+### Como Criar um Bot no Telegram
+
+1. Abra o Telegram e pesquise por **BotFather**.
+2. Clique em **BotFather** nos resultados da pesquisa e inicie uma conversa com o BotFather.
+3. Use o comando `/newbot` para criar um novo bot. O BotFather solicitará um nome para o seu bot. Escolha um nome para o seu bot.
+4. Em seguida, o BotFather solicitará um nome de usuário para o seu bot. O nome de usuário deve terminar com a palavra "bot" e ser único. Por exemplo, `meu_bot_telegram_bot`.
+5. Depois de escolher um nome de usuário, o BotFather fornecerá um token de acesso para o seu bot. Esse token é o que você usará para autenticar seu bot ao enviar e receber mensagens via API do Telegram.
+6. Guarde com segurança o token do bot. Este token será usado para configurar o bot em seu projeto Node.js, como mostrado nas instruções anteriores.
+
+
 ### Configuração do Token do Bot do Telegram
 
 1. No arquivo `.env` na raiz do seu projeto, adicione a seguinte linha:
