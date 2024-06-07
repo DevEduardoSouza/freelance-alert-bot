@@ -1,6 +1,9 @@
 import TelegramBot from "node-telegram-bot-api";
+import dotenv from 'dotenv';
+dotenv.config();
 
-const token = "7409457885:AAGKp1FDAdyDUbaNXAqzOB4SEGHyi3W0S0w";
+
+const token = process.env.TELEGRAM_BOT_TOKEN;
 export const bot = new TelegramBot(token, { polling: true });
 export const chatIdToMonitor = new Set();
 export const lastProjectTitles = {};
