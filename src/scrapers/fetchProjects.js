@@ -16,6 +16,7 @@ export const fetchProjects = async (chatId, siteConfig) => {
         if (project.title !== lastProjectTitles[siteConfig.name]) {
           sendTelegramMessage(chatId, project);
           lastProjectTitles[siteConfig.name] = project.title;
+          console.log("Novo projeto encontrado.");
         } else {
           console.log("Nenhum novo projeto encontrado.");
         }

@@ -11,5 +11,4 @@ export const sendTelegramMessage = (chatId, message) => {
   };
 
   bot.sendMessage(chatId, msg, opts);
-  console.log(msg);
 };
